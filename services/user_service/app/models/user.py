@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from app.db import Base
 
-# Таблица для связи пользователей и ролей (many-to-many)
+# Ассоциативная таблица для связи пользователей и ролей (многие ко многим)
 user_roles = Table(
     "user_roles",
     Base.metadata,
@@ -10,7 +10,7 @@ user_roles = Table(
     Column("role_id", Integer, ForeignKey("roles.id"))
 )
 
-# Модель ролей
+# Модель роли
 class Role(Base):
     __tablename__ = "roles"
 
@@ -22,6 +22,8 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
     username = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
@@ -31,5 +33,4 @@ class User(Base):
     # Связь с ролями
     roles = relationship("Role", secondary=user_roles, back_populates="users")
 
-# Добавляем обратную связь для роли
 Role.users = relationship("User", secondary=user_roles, back_populates="roles")
