@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from app.db import Base
 
 # Ассоциативная таблица для связи пользователей и ролей (многие ко многим)
+
 user_roles = Table(
     "user_roles",
     Base.metadata,
