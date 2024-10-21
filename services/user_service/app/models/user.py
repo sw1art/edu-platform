@@ -30,6 +30,7 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
     is_admin = Column(Boolean, default=False)
+    avatar_url = Column(String, nullable=True)
 
     # Связь с ролями
     roles = relationship("Role", secondary=user_roles, back_populates="users")

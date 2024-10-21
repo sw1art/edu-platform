@@ -1,0 +1,85 @@
+version: '3.9'
+
+services:
+  # База данных PostgreSQL
+  postgresql:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+
+  # Сервис пользователей
+  user_service:
+      build:
+        context: ./services/user_service
+        dockerfile: Dockerfile
+      environment:
+        SQLALCHEMY_ECHO: ${SQLALCHEMY_ECHO}
+        DATABASE_USER: ${DATABASE_USER}
+        DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+        DATABASE_HOST: ${DATABASE_HOST}
+        DATABASE_PORT: ${DATABASE_PORT}
+        DATABASE_NAME: ${DATABASE_NAME}
+        DATABASE_URL: ${DATABASE_URL}
+        DATABASE_URL_ALEMBIC: ${DATABASE_URL_ALEMBIC}
+      ports:
+        - "8001:80" 
+      depends_on:
+        - postgresql
+
+  # # Сервис курсов
+  # course_service:
+  #   build:
+  #     context: ./services/course_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8002:80"
+  #   depends_on:
+  #     - db
+
+  # # Сервис платежей
+  # payment_service:
+  #   build:
+  #     context: ./services/payment_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8003:80"
+  #   depends_on:
+  #     - db
+
+  # # Сервис уведомлений
+  # notification_service:
+  #   build:
+  #     context: ./services/notification_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8004:80"
+
+  # # Сервис администрирования
+  # admin_service:
+  #   build:
+  #     context: ./services/admin_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8005:80"
+
+  # # API Gateway
+  # gateway:
+  #   build:
+  #     context: ./gateway
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:80"  # Порт для Gateway
+  #   depends_on:
+  #     - user_service
+  #     - course_service
+  #     - payment_service
+  #     - notification_service
+  #     - admin_service
+
+volumes:
+  postgresql_data:
