@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.api import user as user_router  
+from app.router import user_router  
 from app.db import get_db
 
 app = FastAPI()

@@ -5,9 +5,9 @@ from app.models import User
 from app.db import get_db
 from app.utils import hash_password, is_username_unique, is_email_unique
 
-router = APIRouter()
+user_router = APIRouter()
 
-@router.post("/users/", response_model=UserResponse)
+@user_router.post("/users/", response_model=UserResponse)
 async def create_user(user: CreateUser, db: AsyncSession = Depends(get_db)):
     # Проверка уникальности username
     if not await is_username_unique(db, user.username):
@@ -37,7 +37,7 @@ async def create_user(user: CreateUser, db: AsyncSession = Depends(get_db)):
 
     return new_user
 
-@router.put("/users/{user_id}", response_model=UserResponse)
+@user_router.put("/users/{user_id}", response_model=UserResponse)
 async def update_user(user_id: int, user: UpdateUser, db: AsyncSession = Depends(get_db)):
     existing_user = await db.get(User, user_id)
     if not existing_user:
@@ -73,7 +73,7 @@ async def update_user(user_id: int, user: UpdateUser, db: AsyncSession = Depends
     return existing_user
 
 
-@router.delete("/users/{user_id}", response_model=dict)
+@user_router.delete("/users/{user_id}", response_model=dict)
 async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
     existing_user = await db.get(User, user_id)
     if not existing_user:
