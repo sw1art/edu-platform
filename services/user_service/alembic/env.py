@@ -9,7 +9,7 @@ from alembic import context
 from app.db import Base
 import os
 from dotenv import load_dotenv
-from services.user_service.app.models import user_roles
+from app.models import user_roles
 
 # Загружаем переменные окружения из .env файла
 load_dotenv()

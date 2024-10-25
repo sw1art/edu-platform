@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field
 
 class CreateUser(BaseModel):
-    first_name: str = Field(..., title="Имя", max_length=50)
+    first_name: str = Field(..., title="First Name", max_length=50)
     last_name: str = Field(..., title="Last Name", max_length=50)
     username: str = Field(..., title="Username", min_length=2, max_length=20)
     email: EmailStr = Field(..., title="Email", max_length=100)
@@ -9,7 +9,7 @@ class CreateUser(BaseModel):
     avatar_url: str = Field(None, title="Avatar URL")
 
 class UpdateUser(BaseModel):
-    first_name: str = Field(None, title="Имя", max_length=50)
+    first_name: str = Field(None, title="First Name", max_length=50)
     last_name: str = Field(None, title="Last Name", max_length=50)
     username: str = Field(None, title="Username", min_length=2, max_length=20)
     email: EmailStr = Field(None, title="Email", max_length=100)
